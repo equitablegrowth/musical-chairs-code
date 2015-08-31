@@ -38,7 +38,7 @@ def education_graph(data):
 	# Take data from load_data and consolidate into national data rows. Currently data is by state
 	# and education level. This function collapses all states and all educations into a year/quarter
 	# by industry observations. Calculate the share of workers with college degrees as % of employees 
-	# with BAs over total employees (not counting those <24). Average wage is also calculated here.
+	# with BAs over total employees (not counting those <24). Average earnings is also calculated here.
 
 	# This function is for the all employees graphs. For the hires graphs, the function education_graph
 	# _hires should be used instead.
@@ -75,14 +75,14 @@ def education_graph(data):
 					total_emp=quarter_data['EmpS'].sum()
 					e4_emp=quarter_data[quarter_data['education']=='E4']['EmpS'].sum()
 					total_earn=quarter_data['weighted'].sum()
-					average_wage=total_earn/total_emp
+					average_earn=total_earn/total_emp
 					educ_share=e4_emp/total_emp
 				except:
-					average_wage=0
+					average_earn=0
 					educ_share=0
 					total_emp=0
 
-				national_list.append([year,quarter,industry,average_wage,educ_share,total_emp])
+				national_list.append([year,quarter,industry,average_earn,educ_share,total_emp])
 
 	return national_list
 
@@ -91,7 +91,7 @@ def education_graph_hires(datafile):
 	# Take data from load_data and consolidate into national data rows. Currently data is by state
 	# and education level. This function collapses all states and all educations into a year/quarter
 	# by industry observations. Calculate the share of workers with college degrees as % of employees 
-	# with BAs over total employees (not counting those <24). Average wage is also calculated here.
+	# with BAs over total employees (not counting those <24). Average earnings is also calculated here.
 
 	# This function is for the hires graphs. For the all employees graphs, the function education_graph
 	# should be used instead.
@@ -128,14 +128,14 @@ def education_graph_hires(datafile):
 					total_emp=quarter_data['HirAS'].sum()
 					e4_emp=quarter_data[quarter_data['education']=='E4']['HirAS'].sum()
 					total_earn=quarter_data['weighted'].sum()
-					average_wage=total_earn/total_emp
+					average_earn=total_earn/total_emp
 					educ_share=e4_emp/total_emp
 				except:
-					average_wage=0
+					average_earn=0
 					educ_share=0
 					total_emp=0
 
-				national_list.append([year,quarter,industry,average_wage,educ_share,total_emp])
+				national_list.append([year,quarter,industry,average_earn,educ_share,total_emp])
 
 	return national_list
 
@@ -149,11 +149,11 @@ def education_graph2(educ_data,dates=[2008,2014,2]):
 	master=[]
 
 	for industry in industries:
-		wage_start=0
+		earn_start=0
 		employment=0
 		for row in [row for row in educ_data if row[2]==industry]:
 			if row[0]==dates[0]:
-				wage_start=wage_start+row[3]
+				earn_start=earn_start+row[3]
 				employment=employment+row[5]
 
 			if row[0]==dates[0] and row[1]==dates[2]:
@@ -165,8 +165,8 @@ def education_graph2(educ_data,dates=[2008,2014,2]):
 		# is months, so multiplying it by 3/4 averages it over quarters and then converts it from months
 		# to actual quarterly earnings. Employment is divided by 4 because it is also currently just the
 		# sum of 4 quarters. The headers for this should be: ['industry','start','end','educ_delta',
-		# 'wages','emp']
-		master.append([industry,educ_start,educ_end,educ_end-educ_start,wage_start*.75,employment/4])
+		# 'earnings','emp']
+		master.append([industry,educ_start,educ_end,educ_end-educ_start,earn_start*.75,employment/4])
 	return master
 
 
@@ -174,7 +174,7 @@ def write(file,master):
 	# Once master has been created by education_graph2, this will write the data to 'file' with headers.
 	with open(file,'wb') as csvfile:
 		writer=csv.writer(csvfile)
-		writer.writerow(['industry','start','end','educ_delta','wages','emp'])
+		writer.writerow(['industry','start','end','educ_delta','earnings','emp'])
 		for row in master:
 			writer.writerow(row)
 
