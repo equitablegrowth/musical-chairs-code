@@ -1,4 +1,4 @@
-# Data and cleaning script for "The Cruel Game of Musical Chairs"
+## Data and cleaning script for "The Cruel Game of Musical Chairs"
 
 This repository contains 4 files: 
 
