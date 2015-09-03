@@ -87,7 +87,7 @@ def education_graph(data):
 	return national_list
 
 
-def education_graph_hires(datafile):
+def education_graph_hires(data):
 	# Take data from load_data and consolidate into national data rows. Currently data is by state
 	# and education level. This function collapses all states and all educations into a year/quarter
 	# by industry observations. Calculate the share of workers with college degrees as % of employees 
